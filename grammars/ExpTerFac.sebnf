@@ -1,0 +1,8 @@
+e -c> t eop .
+eop -o> eo .
+eo -c> "+" t eop . 
+t -c> f top .
+top -o> to .
+to -c> "*" f top .
+f -s> #num par .
+par -c> "(" e ")" .

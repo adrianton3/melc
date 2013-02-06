@@ -19,6 +19,8 @@
 
 package adrianton.melc.production;
 
+import java.util.Set;
+
 public class TermId implements Production, Token {
 	final String name;
 	
@@ -36,6 +38,11 @@ public class TermId implements Production, Token {
 		return false;
 	}
 
+	@Override
+	public void walk(Set<String> visited, Set<String> isNull, Set<String> isNotNull) throws AlreadyBeenHereException {
+		isNotNull.add(getName());
+	}
+	
 	@Override
 	public FirstSet first(int k) {
 		return FirstSet.get(FirstEl.get(this));
@@ -64,7 +71,7 @@ public class TermId implements Production, Token {
 	
 	@Override
 	public String getName() {
-		return name;
+		return "TermId(" + name + ")";
 	}
 	
 	@Override

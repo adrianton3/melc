@@ -8,7 +8,6 @@ Melc understands languages written in the in the SEBNF (Simplified Extended Back
 simple and intuitive variation on the original EBNF. Here's a brief description of it:
 
 
----
 The concatenation rule type (-c>)
 ---------------------------------
 
@@ -30,7 +29,6 @@ The ASTNode derived from this rule can be the following:
     }
 
 
----
 The switch rule type (-s>)
 --------------------------
 
@@ -39,7 +37,7 @@ Let's now define rules for parsing a condition which might appear inside an if-s
     condition -c> expression relation expression
     relation -s> "<" "<=" "==" ">=" ">"
 
-Relation can be any of the terminals stated after -s>
+Relation can be any of the terminals stated after `-s>`
 
 The ASTNodes for this stub grammar may look like this:
 
@@ -54,7 +52,6 @@ The ASTNodes for this stub grammar may look like this:
     }
 
 
----
 The list rule type (-l>)
 ------------------------
 
@@ -75,7 +72,6 @@ The ASTNodes for this stub grammar may look like:
     }
 
 
----
 The option rule type (-o>)
 --------------------------
 
@@ -89,7 +85,6 @@ Maybe we want to be able to declare constants, but have them initialized at a la
 Sure the grammar in EBNF form would have had just one rule, but there is not enough naming information in that form.
 
 
----
 Why even consider this SEBNF monstrosity?
 -----------------------------------------
 

@@ -110,7 +110,7 @@ public class ParserGenerator {
 		
 		sb.append(
 				"ASTBuilder(ArrayList<RToken> token) {\n" +
-				"super(token);\n" +
+				" super(token);\n" +
 				"}\n\n");
 		
 		sb.append(

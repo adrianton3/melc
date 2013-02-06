@@ -19,6 +19,8 @@
 
 package adrianton.melc.production;
 
+import java.util.Set;
+
 public class Term implements Production, Token {
 	final String cont;
 	
@@ -36,6 +38,11 @@ public class Term implements Production, Token {
 		return false;
 	}
 
+	@Override
+	public void walk(Set<String> visited, Set<String> isNull, Set<String> isNotNull) throws AlreadyBeenHereException {
+		isNotNull.add(getName());
+	}
+	
 	@Override
 	public FirstSet first(int k) {
 		return FirstSet.get(FirstEl.get(this));
@@ -67,7 +74,7 @@ public class Term implements Production, Token {
 	}
 	
 	public String getName() {
-		throw new UnsupportedOperationException("terminals don't have names");
+		return "Term(" + cont + ")";
 	}
 	
 	public String toString() {

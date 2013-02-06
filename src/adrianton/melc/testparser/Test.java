@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import adrianton.melc.ParserGenerator;
 import adrianton.melc.Statics;
 import adrianton.melc.grammar.Grammar;
+import adrianton.melc.grammar.WalkResult;
 
 public class Test {
 	static void testParser() { 
@@ -34,46 +35,36 @@ public class Test {
 		final SimpleTokenizer tokenizer = new SimpleTokenizer();
 		final ArrayList<RToken> token = tokenizer.tokenize(source);
 		
+		System.out.println("After tokenization:");
 		System.out.println(token);
+		System.out.println();
 		
 		final ASTBuilderBase astb = new ASTBuilder(token);
 		final Node tree = astb.getTree();
 		
+		System.out.println("After parsing:");
 		System.out.println(tree);
+	}
+
+	static void testWalk() {
+		final String grStr = Statics.fromFile("grammars/G1.sebnf");
+		final Grammar grammar = Grammar.fromString(grStr);
+		
+		System.out.println("Grammar:");
+		System.out.println(grammar);
+		
+		final WalkResult wr = grammar.walk();
+		
+		System.out.println("WalkResult:");
+		System.out.println(wr);
 	}
 	
 	static void testBuilder() {
-		final String grStr1 =
-				"a -s> aa ab \"+\" . " +
-				"aa -c> \"(\" a \")\" . " + 
-				"ab -c> \"[\" a \"]\" .";
-		final String grStr2 =
-				"exp -s> fac aux . " +
-				"aux -c> fac pm fac . " +
-				"pm -s> \"+\" \"-\" . " +
-				"fac -s> _ID _NUM par . " +
-				"par -c> \"(\" exp \")\" .";
-		final String grStr3 =
-				"e -s> ex t . " +
-				"ex -c> t \"+\" e . " +
-				"t -s> tx f . " +
-				"tx -c> f \"*\" t . " +
-				"f -s> _NUM _ID par . " +
-				"par -c> \"(\" e \")\" .";
-		final String grStr =
-				"e -c> t eop . " +
-				"eop -o> eo . " +
-				"eo -c> \"+\" t eop . " + 
-				"t -c> f top . " +
-				"top -o> to . " +
-				"to -c> \"*\" f top . " +
-				"f -s> #num par . " +
-				"par -c> \"(\" e \")\" .";
-
+		final String grStr = Statics.fromFile("grammars/ExpTerFac.sebnf");
 		final Grammar grammar = Grammar.fromString(grStr);
 		
 		final String fName = "src/adrianton/melc/testparser/ASTBuilder.java";
-		final String content = ParserGenerator.getParser(grammar,2,"adrianton.melc.testparser");
+		final String content = ParserGenerator.getParser(grammar, 2, "adrianton.melc.testparser");
 		
 		Statics.toFile(fName,content);
 	}
@@ -81,5 +72,6 @@ public class Test {
 	public static void main(String[] args) {
 		//testBuilder();
 		testParser();
+		//testWalk();
 	}
 }

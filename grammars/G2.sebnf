@@ -1,0 +1,4 @@
+a -c> c d b .
+b -c> c d c d a .
+c -l> "1" .
+d -c> "3" .

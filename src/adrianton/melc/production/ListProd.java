@@ -19,8 +19,10 @@
 
 package adrianton.melc.production;
 
-import adrianton.melc.Statics;
+import java.util.HashSet;
+import java.util.Set;
 
+import adrianton.melc.Statics;
 
 public class ListProd implements Production {
 	private final String name;
@@ -38,7 +40,17 @@ public class ListProd implements Production {
 	
 	@Override
 	public boolean isRecursive() {
-		throw new UnsupportedOperationException("isRecursive not yet implemented");
+		try { walk(new HashSet<String>(), new HashSet<String>(), new HashSet<String>()); }
+		catch(AlreadyBeenHereException ex) { return true; }
+		return false;
+	}
+	
+	@Override
+	public void walk(Set<String> visited, Set<String> isNull, Set<String> isNotNull) throws AlreadyBeenHereException {
+		if(visited.contains(name)) throw new AlreadyBeenHereException();
+		visited.add(name);
+		isNull.add(name);
+		prod.walk(visited, isNull, isNotNull);
 	}
 
 	@Override

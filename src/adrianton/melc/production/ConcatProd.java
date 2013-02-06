@@ -20,6 +20,8 @@
 package adrianton.melc.production;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import adrianton.melc.Statics;
 
@@ -38,7 +40,28 @@ public class ConcatProd implements Production {
 	
 	@Override
 	public boolean isRecursive() {
-		throw new UnsupportedOperationException("isRecursive not yet implemented");
+		try { walk(new HashSet<String>(), new HashSet<String>(), new HashSet<String>()); }
+		catch(AlreadyBeenHereException ex) { return true; }
+		return false;
+	}
+	
+	@Override
+	public void walk(Set<String> visited, Set<String> isNull, Set<String> isNotNull) throws AlreadyBeenHereException {
+		if(visited.contains(name)) throw new AlreadyBeenHereException();
+		visited.add(name);
+		
+		boolean imNull = true;
+		
+		for(int i=0; i<prod.size(); i++) {
+			prod.get(i).walk(visited, isNull, isNotNull);
+			if(isNotNull.contains(prod.get(i).getName())) { 
+				imNull = false; 
+				break; 
+			}
+		}
+		
+		if(imNull) isNull.add(name);
+		else isNotNull.add(name);
 	}
 
 	@Override

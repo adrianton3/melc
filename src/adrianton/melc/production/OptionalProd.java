@@ -20,9 +20,9 @@
 package adrianton.melc.production;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import adrianton.melc.Statics;
-
 
 public class OptionalProd implements Production {
 	private final String name;
@@ -40,7 +40,17 @@ public class OptionalProd implements Production {
 	
 	@Override
 	public boolean isRecursive() {
-		throw new UnsupportedOperationException("isRecursive not yet implemented");
+		try { walk(new HashSet<String>(), new HashSet<String>(), new HashSet<String>()); }
+		catch(AlreadyBeenHereException ex) { return true; }
+		return false;
+	}
+	
+	@Override
+	public void walk(Set<String> visited, Set<String> isNull, Set<String> isNotNull) throws AlreadyBeenHereException {
+		if(visited.contains(name)) throw new AlreadyBeenHereException();
+		visited.add(name);
+		isNull.add(name);
+		prod.walk(visited, isNull, isNotNull);
 	}
 
 	@Override
@@ -101,6 +111,7 @@ public class OptionalProd implements Production {
 		return name; 
 	}
 	
+	@Override
 	public String getName() {
 		return name;
 	}

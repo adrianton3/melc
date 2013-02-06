@@ -20,6 +20,8 @@
 package adrianton.melc.production;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import adrianton.melc.Statics;
 
@@ -38,15 +40,36 @@ public class SwitchProd implements Production {
 	
 	@Override
 	public boolean isRecursive() {
-		throw new UnsupportedOperationException("isRecursive not yet implemented");
+		try { walk(new HashSet<String>(), new HashSet<String>(), new HashSet<String>()); }
+		catch(AlreadyBeenHereException ex) { return true; }
+		return false;
+	}
+	
+	@Override
+	public void walk(Set<String> visited, Set<String> isNull, Set<String> isNotNull) throws AlreadyBeenHereException {
+		if(visited.contains(name)) throw new AlreadyBeenHereException();
+		visited.add(name);
+		
+		boolean imNull = false;
+		
+		for(Production p: prod) {
+			p.walk(visited, isNull, isNotNull);
+			if(isNull.contains(p.getName())) imNull = true;
+		}
+		
+		if(imNull) isNull.add(name); 
+		else isNotNull.add(name);
 	}
 	
 	@Override
 	public FirstSet first(int k) {
 		FirstSet ret = FirstSet.Empty();
 		
-		for(int i=0;i<prod.size();i++)
-			ret = ret.union(prod.get(i).first(k));
+		for(Production p: prod) {
+			ret = ret.union(p.first(k));
+			//we need to verify if their intersection contains something more interesting than ("")	
+			//if(!FirstSet.disjoint(oRet, pfs, ret)) throw new FirstSetConflictException();
+		}
 		
 		return ret;
 	}

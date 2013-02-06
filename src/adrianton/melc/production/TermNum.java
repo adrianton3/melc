@@ -19,6 +19,8 @@
 
 package adrianton.melc.production;
 
+import java.util.Set;
+
 public class TermNum implements Production, Token {
 	final String name;
 	
@@ -34,6 +36,11 @@ public class TermNum implements Production, Token {
 	@Override
 	public boolean isRecursive() {
 		return false;
+	}
+	
+	@Override
+	public void walk(Set<String> visited, Set<String> isNull, Set<String> isNotNull) throws AlreadyBeenHereException {
+		isNotNull.add(getName());
 	}
 
 	@Override
@@ -64,7 +71,7 @@ public class TermNum implements Production, Token {
 	
 	@Override
 	public String getName() {
-		return name;
+		return "TermNum(" + name + ")";
 	}
 	
 	@Override

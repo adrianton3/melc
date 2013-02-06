@@ -20,8 +20,11 @@
 package adrianton.melc;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Statics {
 	public static String capitalize(String s) {
@@ -42,5 +45,21 @@ public class Statics {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static String fromFile(String fName) {
+		//ugly :(
+		
+		try {
+			Scanner scan = new Scanner(new File(fName));
+			scan.useDelimiter("\\Z");
+			String ret = scan.next();
+			scan.close();
+			return ret;
+		} catch(FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		return null;
 	}
 }

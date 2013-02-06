@@ -17,18 +17,19 @@
  * along with Melc. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package adrianton.melc.production;
+package adrianton.melc.grammar;
 
-import java.util.Set;
-
-public interface Production {
-	void add(Production p);
-	boolean isRecursive();
-	void walk(Set<String> visited, Set<String> isNull, Set<String> isNotNull) throws AlreadyBeenHereException;
-	FirstSet first(int k);
-	String toStr();
-	String getName();
-	String getProcCode();
-	String getStubCode();
-	String getProcNameCode();
+public class WalkResult {
+	final boolean isRecursive;
+	final boolean allReachable;
+	
+	WalkResult(boolean isRecursive, boolean allReachable) {
+		this.isRecursive = isRecursive;
+		this.allReachable = allReachable;
+	}
+	
+	@Override
+	public String toString() {
+		return "isRecursive: " + isRecursive + ", allReachable: " + allReachable;
+	}
 }

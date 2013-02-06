@@ -21,14 +21,16 @@ package adrianton.melc.grammar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
+import adrianton.melc.grammar.token.EndProdSym;
+import adrianton.melc.grammar.token.GTerm;
 import adrianton.melc.grammar.token.GTermId;
 import adrianton.melc.grammar.token.GTermNum;
-import adrianton.melc.grammar.token.ProdIdentifier;
-import adrianton.melc.grammar.token.EndProdSym;
-import adrianton.melc.grammar.token.ProdSym;
-import adrianton.melc.grammar.token.GTerm;
 import adrianton.melc.grammar.token.GToken;
+import adrianton.melc.grammar.token.ProdIdentifier;
+import adrianton.melc.grammar.token.ProdSym;
+import adrianton.melc.production.AlreadyBeenHereException;
 import adrianton.melc.production.ConcatProd;
 import adrianton.melc.production.ListProd;
 import adrianton.melc.production.OptionalProd;
@@ -47,10 +49,49 @@ public class Grammar {
 		this.start = start;
 	}
 	
+	private Production getProd(String name) {
+		for(Production p: prod)
+			if(p.getName().equals(name))
+				return p;
+		throw new RuntimeException("No such production could be found: " + name);
+	}
+	
+	private ArrayList<String> getProdName() {
+		ArrayList<String> ar = new ArrayList<String>();
+		
+		for(Production p: prod)
+			ar.add(p.getName());
+		
+		return ar;
+	}
+	
+	public WalkResult walk() {
+		Production startProd = getProd(start); 
+		
+		boolean isRecursive = false;
+		boolean allReachable;
+		
+		HashSet<String> visited = new HashSet<String>();
+		HashSet<String> isNull = new HashSet<String>();
+		HashSet<String> isNotNull = new HashSet<String>();
+		
+		try { startProd.walk(visited, isNull, isNotNull); }
+		catch(AlreadyBeenHereException ex) { isRecursive = true; }
+		
+		ArrayList<String> names = getProdName();
+		allReachable = visited.containsAll(names);
+		
+		return new WalkResult(isRecursive, allReachable);
+	}
+	
 	private static ArrayList<GToken> tokenize(String s) {
+		//TODO: make a proper tokenizer
 		ArrayList<GToken> ret = new ArrayList<GToken>();
-		//TODO: make proper tokenizer
-		String[] ar = s.split(" ");
+		
+		String flattened = s.replaceAll("\\r\\n|\\r|\\n", " ");
+		String trimmed = flattened.trim().replaceAll(" +", " ");
+		
+		String[] ar = trimmed.split(" ");
 		for(int i=0;i<ar.length;i++) {
 			if(ProdIdentifier.match(ar[i])) ret.add(new ProdIdentifier(ar[i]));
 			else if(GTermId.match(ar[i])) ret.add(new GTermId(ar[i]));
@@ -61,6 +102,20 @@ public class Grammar {
 		}
 		
 		return ret;
+	}
+	
+	private static ProdIdentifier getStart(ArrayList<GToken> token) {
+		ProdIdentifier start = null;
+		
+		int i = 0;
+		while(i < token.size()) {
+			if(token.get(i) instanceof ProdIdentifier && token.get(i+1) instanceof ProdSym)
+				{ start = (ProdIdentifier)token.get(i); break; } 
+			else
+				i++;
+		}
+		
+		return start;
 	}
 	
 	private static Grammar toGrammar(ArrayList<GToken> token) {
@@ -93,7 +148,7 @@ public class Grammar {
 				else if(prodSym.isSwitch) tmp = new SwitchProd(tmpName);
 				else if(prodSym.isList) tmp = new ListProd(tmpName);
 				else if(prodSym.isOptional) tmp = new OptionalProd(tmpName);
-				else throw new RuntimeException("tokenizer: unknown token");
+				else throw new RuntimeException("Tokenizer: unknown token");
 				
 				map.put(tmpName, tmp);
 			}
@@ -139,7 +194,7 @@ public class Grammar {
 		
 		ArrayList<Production> ar = new ArrayList<Production>();
 		ar.addAll(map.values());
-		return new Grammar(ar,start);
+		return new Grammar(ar, start);
 	}
 
 	public static Grammar testGrammar() {

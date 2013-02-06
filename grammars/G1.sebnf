@@ -1,0 +1,4 @@
+a -s> aa ab "+" .
+aa -c> "(" a ")" .
+ac -c> aa ab .
+ab -c> "[" a "]" .

@@ -37,6 +37,23 @@ public class FirstSet {
 		return new FirstSet(retSet);
 	}
 	
+	static boolean disjoint(FirstSet a, FirstSet b, FirstSet u) {
+		int apbs = a.size() + b.size();
+		int us = u.size();
+		
+		if((apbs == us) 
+				|| (a.containsEmpty() && b.containsEmpty() && (apbs == us - 1))) return true;
+		return false;
+	}
+	
+	boolean containsEmpty() {
+		return set.contains(FirstEl.Empty());
+	}
+	
+	int size() {
+		return set.size();
+	}
+	
 	FirstSet concat(FirstSet that, int k) {
 		HashSet<FirstEl> retSet = new HashSet<FirstEl>();
 		
@@ -76,7 +93,7 @@ public class FirstSet {
 	}
 	
 	public String toCode(String name) {
-		String ret = "RToken[][] " + name + " = ";
+		String ret = "RToken[][] " + name + " = "; //TODO: use StringBuilder
 		
 		String list = "";
 		for(FirstEl el: set)
