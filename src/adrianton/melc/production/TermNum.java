@@ -70,6 +70,11 @@ public class TermNum implements Production, Token {
 	}
 	
 	@Override
+	public String getMatchCode() {
+		return "_NUM";
+	}
+	
+	@Override
 	public String getName() {
 		return "TermNum(" + name + ")";
 	}

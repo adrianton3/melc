@@ -26,7 +26,8 @@ public interface Production {
 	boolean isRecursive();
 	void walk(Set<String> visited, Set<String> isNull, Set<String> isNotNull) throws AlreadyBeenHereException;
 	FirstSet first(int k);
-	String toStr();
+	String toStr(); //???
+	String getMatchCode();
 	String getName();
 	String getProcCode();
 	String getStubCode();

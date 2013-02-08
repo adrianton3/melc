@@ -71,13 +71,13 @@ public class OptionalProd implements Production {
 		
 		if(prod instanceof Token)
 			ret +=
-					" if(match(" + prod.getName() + "FirstSet))\n" + 
+					" if(match(" + prod.getMatchCode() + "))\n" + 
 					"  return new " + Statics.capitalize(getName()) + "(next());\n" +
 					" else return new " + Statics.capitalize(getName()) + "(null);\n" +
 					"}";
 		else
 			ret +=
-					" if(match(" + prod.getName() + "FirstSet))\n" + 
+					" if(match(" + prod.getMatchCode() + "))\n" + 
 					"  return new " + Statics.capitalize(getName()) + "(" + prod.getName() + "());\n" +
 					" else return new " + Statics.capitalize(getName()) + "(null);\n" +
 					"}";
@@ -114,6 +114,11 @@ public class OptionalProd implements Production {
 	@Override
 	public String getName() {
 		return name;
+	}
+	
+	@Override 
+	public String getMatchCode() {
+		return name + "FirstSet";
 	}
 
 	public String toString() {

@@ -72,13 +72,18 @@ public class Term implements Production, Token {
 	public String getProcNameCode() {
 		throw new UnsupportedOperationException("terminals don't have a proc name");
 	}
+
+	@Override
+	public String getMatchCode() {
+		return "\"" + cont + "\"";
+	}
 	
 	public String getName() {
 		return "Term(" + cont + ")";
 	}
 	
 	public String toString() {
-		return toStr(); //"Term(" + cont + ")";
+		return toStr(); //"Term(" + cont + ")"; //why is toString dependent on toStr?!
 	}
 
 	@Override

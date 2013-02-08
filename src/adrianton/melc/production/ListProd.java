@@ -81,13 +81,10 @@ public class ListProd implements Production {
 	
 	public String getProcCode() {
 		String ret = Statics.capitalize(getName()) + " " + getName() +"() {\n";
-		
-		//TODO: treat separately if terminal
-		
 		ret +=
 				" LinkedList<" + Statics.capitalize(prod.getName()) + "> list = " + 
 				"new LinkedList<" + Statics.capitalize(prod.getName()) + ">();\n" +
-				" while(match(" + prod.getName() + "FirstSet))\n" +
+				" while(match(" + prod.getMatchCode() + "))\n" +
 				"  list.add(" + prod.getName() + "());\n" + 
 				" return new " + Statics.capitalize(prod.getName()) + "(list);\n"+
 				"}";
@@ -126,6 +123,11 @@ public class ListProd implements Production {
 	
 	public String getName() {
 		return name;
+	}
+	
+	@Override 
+	public String getMatchCode() {
+		return name + "FirstSet";
 	}
 
 	public String toString() {

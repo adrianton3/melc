@@ -30,7 +30,7 @@ Node to() {
 }
 
 Node f() {
- if(match(#num)) return next();
+ if(match(_NUM)) return next();
  else if(match(parFirstSet)) return par();
  else throw new RuntimeException("f: parsing error");
 }

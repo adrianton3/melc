@@ -192,6 +192,11 @@ public class ConcatProd implements Production {
 	public String getName() {
 		return name;
 	}
+	
+	@Override 
+	public String getMatchCode() {
+		return name + "FirstSet";
+	}
 
 	public String toString() {
 		String ret = name + " -c> "; //TODO: use StringBuilder

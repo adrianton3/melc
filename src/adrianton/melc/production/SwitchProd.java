@@ -81,11 +81,11 @@ public class SwitchProd implements Production {
 		
 		if(firstProd instanceof Token)
 			ret += 
-					" if(match(" + firstProd.toStr() + ")) " +
+					" if(match(" + firstProd.getMatchCode() + ")) " +
 					"return next();\n";
 		else
 			ret += 
-					" if(match(" + firstProd.getName() + "FirstSet)) " +
+					" if(match(" + firstProd.getMatchCode() + ")) " +
 					"return " + firstProd.getName() + "();\n";
 		
 		for(int i=1;i<prod.size();i++) {
@@ -93,11 +93,11 @@ public class SwitchProd implements Production {
 			
 			if(nowProd instanceof Token)
 				ret += 
-						" else if(match(" + nowProd.toStr() + ")) " +
+						" else if(match(" + nowProd.getMatchCode() + ")) " +
 						"return next();\n";
 			else
 				ret += 
-						" else if(match(" + nowProd.getName() + "FirstSet)) "+
+						" else if(match(" + nowProd.getMatchCode() + ")) "+
 						"return " + nowProd.getName() + "();\n";
 		}
 
@@ -132,6 +132,11 @@ public class SwitchProd implements Production {
 	
 	public String getProcNameCode() {
 		return name; 
+	}
+	
+	@Override 
+	public String getMatchCode() {
+		return name + "FirstSet";
 	}
 	
 	public String getName() {

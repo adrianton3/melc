@@ -70,6 +70,11 @@ public class TermId implements Production, Token {
 	}
 	
 	@Override
+	public String getMatchCode() {
+		return "_ID";
+	}
+	
+	@Override
 	public String getName() {
 		return "TermId(" + name + ")";
 	}
