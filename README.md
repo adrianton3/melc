@@ -85,7 +85,7 @@ Maybe we want to be able to declare constants, but have them initialized at a la
 Sure the grammar in EBNF form would have had just one rule, but there is not enough naming information in that form.
 
 
-Why even consider this SEBNF monstrosity?
+Why even consider this SEBNF monstruosity?
 -----------------------------------------
 
 Take for example the following rule in EBNF:
@@ -108,3 +108,22 @@ Consider the following attempt to come up with a structure to represent this pro
     }
 
 The compiler-compiler isn't smart enough to come up with nice and suggestive names for ASTNodes' fields. Therefore, SEBNF has been developed to explicitly state the ASTNodes' fields and structure.
+
+
+
+Version history:
+================
+
+0.1.2
+-----
+Added grammar files
+Added support for checking if a grammar is left-recursive
+Added support for checking if all rules are reachable
+
+0.1.1
+-----
+Added this README
+
+0.1
+---
+Initial release
